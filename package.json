@@ -2,6 +2,9 @@
   "name": "bible-blitz",
   "version": "1.0.0",
   "private": true,
+  "exports": {
+    "./server": "./src/server/attach.ts"
+  },
   "scripts": {
     "dev": "tsx server.ts",
     "build": "next build",

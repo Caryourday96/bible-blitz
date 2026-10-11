@@ -18,3 +18,7 @@ Discovery push verified: `3514c1bb97ff49749a4d39b36dac8c5702ba69ad` on `origin/m
 - Implemented deterministic state transitions, deadline timers, penalties, steals, undo, rounds, ties, hints and streaks; public views omit unrevealed answers, countdown scrambles and the future deck.
 - Type checking and lint pass. Full local suite currently has 359 passing engine/bank/socket tests. The engine is committed first; UI and sockets are the following checkpoint.
 - Local browser gameplay checks have passed Party, Solo, multiplayer and host/display flows on desktop Chromium and emulated mobile Chromium. Accessibility checks pass for home and setup after layout/contrast fixes. Final combined release rerun remains pending.
+
+## Complete game checkpoint — 2026-10-11
+
+All four modes implemented. 360 unit/integration tests passed, including real-socket isolation/CORS on a shared HTTP server. All 10 Playwright scenarios passed across desktop and mobile Chromium. Home/setup axe checks passed. Typecheck, lint, production build and static export at /bibleblitz passed. Reference video reviewed. Azure integration is prepared; live rollout remains in progress.
