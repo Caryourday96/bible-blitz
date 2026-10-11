@@ -34,3 +34,13 @@ The adapter's `dispose()` clears rooms/connections; the embedding app owns HTTP 
 Browser verification against a deployment: set `E2E_BASE_URL=https://adeticket.com/bibleblitz/` and run `npm run test:e2e`. This creates temporary test rooms and does not touch Friends Showdown games.
 
 Documentation: [Azure prebuilt static deployment](https://learn.microsoft.com/azure/static-web-apps/build-configuration#skip-building-front-end-app), [Socket.IO server options](https://socket.io/docs/v4/server-options/).
+
+## Verified live release — 2026-10-11
+
+- Application revision pinned by both integrations: `1d3bd91bcb8b8b9e6c15b527efcec372d5a23899`.
+- Portfolio revision: `491e569dd5d120b91b0202dbdda9fff2aa614774`; [successful Azure deployment](https://github.com/Caryourday96/personal_site/actions/runs/38117476370).
+- Backend revision: `249b257a6158dbd9beba5c686042d8e39eb3f561`; [successful Azure deployment](https://github.com/Caryourday96/adeticket-ff/actions/runs/38117677307).
+- The existing Azure platform CORS layer must also allow `https://adeticket.com`. The backend workflow now adds it idempotently while preserving the legacy origin.
+- All 10 public browser scenarios and the supplementary production check passed. All existing portfolio entries remain live.
+
+Later documentation/test commits do not change the deployed application bundle until these pins are intentionally updated.

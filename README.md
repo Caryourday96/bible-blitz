@@ -6,7 +6,7 @@ Repository: https://github.com/Caryourday96/bible-blitz
 
 ## Play
 
-Canonical deployment: https://adeticket.com/bibleblitz (Azure rollout in progress).
+Play now: https://adeticket.com/bibleblitz — deployed and verified on Azure.
 
 - **Party:** one device, 2–8 teams, spoken answers and host scoring.
 - **Host + big screen:** a phone controls a synchronized TV or projector view.

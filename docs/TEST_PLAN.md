@@ -7,3 +7,5 @@
 - Each phase records actual commands, results and unresolved limits. No claimed success without execution.
 
 Validated 2026-10-11: 360 unit/integration tests and all 10 desktop/mobile Chromium E2E tests passed. Both regular and static export builds pass. Real socket test proves coexistence with a pre-existing Socket.IO path, WebSocket/polling, CORS allowlist, denied foreign origins, and preserved HTTP handling. Live Azure rerun follows deployment.
+
+Public release verification: all 10 existing E2E tests passed with `E2E_BASE_URL=https://adeticket.com/bibleblitz/`. With the same variable, `node scripts/production-check.mjs` verifies responsive layouts through 1920px, reduced motion, keyboard scoring, local presentation synchronization and concurrent-game isolation. That script passed on 2026-10-11. No Firefox/WebKit or physical TV hardware validation is claimed.

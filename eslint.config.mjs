@@ -4,7 +4,15 @@ import tseslint from 'typescript-eslint';
 import hooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 export default defineConfig([
-  globalIgnores(['.next/**', 'test-results/**', 'playwright-report/**', 'next-env.d.ts']),
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'dist/**',
+    'coverage/**',
+    'test-results/**',
+    'playwright-report/**',
+    'next-env.d.ts',
+  ]),
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
