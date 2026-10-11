@@ -113,14 +113,17 @@ export function useRoom() {
       setBusy(false);
     }
   };
-  const join = async (code: string, name: string, display = false) => {
-    setBusy(true);
-    try {
-      return await send('join', { code: code.toUpperCase().trim(), name, display });
-    } finally {
-      setBusy(false);
-    }
-  };
+  const join = useCallback(
+    async (code: string, name: string, display = false) => {
+      setBusy(true);
+      try {
+        return await send('join', { code: code.toUpperCase().trim(), name, display });
+      } finally {
+        setBusy(false);
+      }
+    },
+    [send],
+  );
   const resume = useCallback(
     async (code: string) => {
       try {

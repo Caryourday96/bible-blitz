@@ -30,6 +30,7 @@ import { GameScreen } from './GameScreen';
 import { startMusic, tone, unlockAudio } from './audio';
 import { useRoom } from './useRoom';
 import { appPath } from './paths';
+import { CastControls } from './CastControls';
 
 const modes = [
   {
@@ -432,6 +433,9 @@ export function BlitzApp() {
         {presentation && <span className="eyebrow">THE BIG SCREEN</span>}
       </header>
       <div id="main-content" tabIndex={-1}>
+        {room.credential?.role === 'host' && code && (
+          <CastControls key={code} code={code} displayUrl={`${joinLink}&display=1`} />
+        )}
         {(error || room.error) && (
           <div className="error-banner" role="alert">
             {error || room.error}

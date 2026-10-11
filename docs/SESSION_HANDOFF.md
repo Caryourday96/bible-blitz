@@ -1,5 +1,9 @@
 # Session handoff
 
+## Casting update in progress — 2026-10-11
+
+The casting implementation is ready for integration in this checkpoint. See CASTING.md for protocol, setup and device limitations. Update both integration pins to this commit, deploy the receiver before the frontend, and verify the real cross-origin display and socket connection. Physical TV acceptance remains pending. The release evidence below describes the previous deployed version.
+
 - Branch: main.
 - Latest verified pushed application revision: 1d3bd91bcb8b8b9e6c15b527efcec372d5a23899. Both deployments pin this application revision. This handoff belongs to a subsequent documentation/test checkpoint; read origin/main for the current documentation revision.
 - Live URL: https://adeticket.com/bibleblitz. No account required. Added to https://adeticket.com alongside all five existing projects.

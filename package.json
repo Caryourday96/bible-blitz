@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "exports": {
-    "./server": "./src/server/attach.ts"
+    "./server": "./src/server/attach.ts",
+    "./cast": "./src/cast/protocol.ts"
   },
   "scripts": {
     "dev": "tsx server.ts",

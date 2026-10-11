@@ -1,5 +1,9 @@
 # Progress
 
+## Casting implementation — 2026-10-11
+
+Added Google Cast controls to hosted games, a display-only TV route, acknowledgement/retry handling and iPhone/iPad AirPlay guidance. Reuses the existing registered receiver and Azure resources. 368 unit/socket tests pass. All eight new casting browser scenarios pass across desktop and mobile; all ten original scenarios also passed during this change. Production build passes. Receiver integration, static hosting rules and live rollout are in progress. Physical TV discovery/launch remains an explicit device check.
+
 ## 2026-10-10 — discovery
 
 - Read complete owner brief.

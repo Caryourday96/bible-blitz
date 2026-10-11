@@ -17,6 +17,16 @@ const config: NextConfig = {
               { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
             ],
           },
+          {
+            source: '/tv',
+            headers: [
+              { key: 'X-Frame-Options', value: '' },
+              {
+                key: 'Content-Security-Policy',
+                value: "frame-ancestors 'self' https://ff.adeticket.com",
+              },
+            ],
+          },
         ];
       },
 };

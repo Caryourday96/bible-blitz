@@ -15,6 +15,14 @@ Play now: https://adeticket.com/bibleblitz — deployed and verified on Azure.
 
 No account is required. The bank has 336 entries across ten categories and four difficulty levels. Games support configurable timers and rounds, pause/resume, penalties, steals, undo, tiebreakers and replay. Audio is optional; presentation screens contain no host controls.
 
+## Cast to a TV
+
+Choose **Host + big screen**, create a game, then select **Cast to TV**. Use Chrome on a computer or Android with a Chromecast or Google Cast TV on the same Wi-Fi. The TV shows only the board; your device retains the host controls. The connection status waits for the TV to join the room. Reconnect, change TV and stop casting controls are included. Keep the host tab open; game sounds play on the host device.
+
+For iPhone or iPad, the app provides **AirPlay / Screen Mirroring** instructions. Use Control Center → Screen Mirroring → your Apple TV or compatible TV. For a board without host controls, mirror the big-screen view from a separate device. Browser tab casting and HDMI remain available. Native Google Cast is offered for hosted rooms, including Online; local Party and Solo use screen/tab mirroring.
+
+See [casting implementation and device checklist](docs/CASTING.md). Physical TV discovery and launch require a real-device check; automated browser tests do not establish hardware compatibility.
+
 ## Run locally
 
 Use Node 24 (minimum Node 22). Run `npm ci`, then `npm run dev` and open http://localhost:3000. For a production build run `npm run build` then `npm start`. See `.env.example` for configuration. Public variables are compiled into the frontend; never put secrets in them.

@@ -1,5 +1,11 @@
 # Implementation backlog
 
+## Casting follow-up — 2026-10-11
+
+- Implemented: Google Cast host controls; display-only TV route; matching ready/error acknowledgements; retry/change/stop; AirPlay instructions. 368 unit/socket tests and eight new browser scenarios pass.
+- In progress: shared receiver integration, restricted TV embedding headers, deployment and public cross-origin validation.
+- Pending physical device acceptance: actual Chromecast/Google TV discovery and launch, Wi-Fi recovery, AirPlay picture/audio. SDK fixtures are not hardware verification.
+
 | Epic / feature      | User story and acceptance criteria                                                    | Priority | Dependencies    | Status   | Implementation / validation                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------- | -------- | --------------- | -------- | ------------------------------------------------------------------------------------------------ |
 | Discovery           | Owner can trace repository, stack and decisions; inspect origin, refs and permissions | P0       | GitHub          | Verified | Empty repo, push permission confirmed; discovery and engine pushes verified                      |

@@ -2539,3 +2539,61 @@ input[type='range'] {
 .standings strong {
   color: var(--text);
 }
+.cast-panel {
+  margin: 22px auto 0;
+  width: min(1120px, calc(100% - 40px));
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  text-align: left;
+}
+.cast-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+.cast-actions .text-button,
+.cast-device {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.cast-device {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.cast-status {
+  margin: 10px 0 0;
+}
+.tv-help {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.tv-help summary {
+  cursor: pointer;
+  color: var(--gold);
+  padding: 8px 0;
+}
+.tv-help p {
+  margin: 8px 0;
+  max-width: 780px;
+}
+.tv-help a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+.cast-display .site-header {
+  pointer-events: none;
+}
+@media (max-width: 500px) {
+  .cast-panel {
+    width: calc(100% - 28px);
+    padding: 13px;
+  }
+  .cast-actions {
+    gap: 12px;
+  }
+}
