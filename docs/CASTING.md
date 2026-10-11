@@ -23,6 +23,8 @@ The TV reports ready/reconnecting/error with the matching room and request UUID.
 
 Unit tests cover parsing, fixed URLs, acknowledgement correlation, timeout, send failures, SDK retries and iOS fallback. Browser tests mock the Cast SDK for controls; a separate real Socket.IO display test covers joining, scoring, results and replay. Receiver tests exercise the cross-origin message bridge and preserve the legacy receiver path.
 
+The live release passed all 18 desktop/mobile scenarios. Run `E2E_BASE_URL=https://adeticket.com/bibleblitz/ node scripts/cast-production-check.mjs` for the additional deployed host/receiver/iframe/socket check, including headers, acknowledgements, scoring, replay and offline recovery. This uses actual public pages and sockets with simulated Google Cast transport; it also saves a 1920px TV screenshot.
+
 Physical Google Cast discovery/launch, receiver registration availability on an actual TV, and AirPlay picture/audio remain a device acceptance check. Connect a compatible TV and host to the same Wi-Fi; check initial connection, reveal/score, replay, Wi-Fi recovery and stop casting. Automated SDK fixtures do not prove these hardware steps.
 
 References: [Google web sender support](https://developers.google.com/cast/docs/web_sender), [custom receiver](https://developers.google.com/cast/docs/web_receiver/core_features), [Apple Screen Mirroring](https://support.apple.com/en-us/102661).

@@ -3,7 +3,7 @@
 ## Casting follow-up — 2026-10-11
 
 - Implemented: Google Cast host controls; display-only TV route; matching ready/error acknowledgements; retry/change/stop; AirPlay instructions. 368 unit/socket tests and eight new browser scenarios pass.
-- In progress: shared receiver integration, restricted TV embedding headers, deployment and public cross-origin validation.
+- Verified: shared receiver integration, restricted TV embedding headers and both Azure deployments. All 18 public browser scenarios and the real cross-origin iframe/socket/acknowledgement check passed, including replay and network recovery. Google Cast transport was simulated.
 - Pending physical device acceptance: actual Chromecast/Google TV discovery and launch, Wi-Fi recovery, AirPlay picture/audio. SDK fixtures are not hardware verification.
 
 | Epic / feature      | User story and acceptance criteria                                                    | Priority | Dependencies    | Status   | Implementation / validation                                                                      |

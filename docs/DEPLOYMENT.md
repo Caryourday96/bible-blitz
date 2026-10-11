@@ -44,3 +44,13 @@ Documentation: [Azure prebuilt static deployment](https://learn.microsoft.com/az
 - All 10 public browser scenarios and the supplementary production check passed. All existing portfolio entries remain live.
 
 Later documentation/test commits do not change the deployed application bundle until these pins are intentionally updated.
+
+## Casting release — 2026-10-11
+
+- Application pinned by both integrations: `7bafc33aa43dc087b58e2d59fe95575183e38d9c`; [successful validation](https://github.com/Caryourday96/bible-blitz/actions/runs/38154437284).
+- Receiver/backend: `83626ca0a5bc69a5c761b297963aca76111a8366`; [successful Azure deployment](https://github.com/Caryourday96/adeticket-ff/actions/runs/38154638074). Receiver supports both existing Friends Showdown and Bible Blitz namespaces. Existing app ID `0AF8BA4D` and `/cast` URL are unchanged.
+- Frontend/guide: `5931f2e2a27f40359da2d05b19dc6f231fe6de36`; [successful Azure deployment](https://github.com/Caryourday96/personal_site/actions/runs/38154777337).
+- `/bibleblitz/tv` rewrites to `/bibleblitz/tv.html`. Both TV documents use `frame-ancestors 'self' https://ff.adeticket.com` and remove X-Frame-Options. These specific rules precede the broader Bible Blitz rule, which still denies framing. The receiver alone allows an Adeticket iframe in its CSP.
+- All 18 browser scenarios passed against production. `scripts/cast-production-check.mjs` additionally passed real cross-origin headers, iframe, Socket.IO, acknowledgement, scoring, replay and network recovery with simulated Google Cast transport. Physical TV launch is still a device check.
+
+Deploy a compatible receiver before publishing a new sender. Roll back by reverting the corresponding integration commits. No changes to the Google Cast registration or extra infrastructure are needed for this release.
