@@ -2597,3 +2597,379 @@ input[type='range'] {
     gap: 12px;
   }
 }
+/* Host Control Center and TV Presentation Studio */
+.host-tools {
+  max-width: 1160px;
+  margin: 20px auto;
+}
+.host-tool-bar,
+.tool-tabs,
+.tool-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.host-tool-bar .selected,
+.tool-tabs [aria-pressed='true'] {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.tool-workspace {
+  margin-top: 16px;
+  border: 1px solid #465245;
+  border-radius: 22px;
+  padding: 28px;
+  background: var(--surface);
+}
+.tool-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+.tool-heading h2 {
+  margin: 8px 0 16px;
+  font-size: clamp(24px, 3vw, 36px);
+}
+.tool-fields {
+  border: 0;
+  padding: 0;
+  margin: 22px 0 0;
+  min-width: 0;
+}
+.run-summary {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.run-summary span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.tool-fields .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.tool-fields input:not([type='checkbox']),
+.tool-fields select,
+.tool-fields textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #52614f;
+  background: #141e18;
+  color: #fff9eb;
+  border-radius: 10px;
+  font: inherit;
+}
+.tool-fields input[type='color'] {
+  width: 62px;
+  height: 46px;
+  padding: 4px;
+}
+.question-plan {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+.question-plan li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #3a4739;
+}
+.plan-position {
+  color: var(--gold);
+  font-size: 13px;
+  width: 24px;
+  flex-shrink: 0;
+}
+.plan-word {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.plan-word strong {
+  display: block;
+  font-size: 18px;
+}
+.plan-word small {
+  display: block;
+  color: #bbc8b5;
+  margin-top: 6px;
+}
+.plan-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.replacement-picker {
+  padding: 20px;
+  border: 1px solid #5f7159;
+  border-radius: 14px;
+}
+.replacement-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-height: 260px;
+  overflow: auto;
+  margin: 12px 0;
+}
+.replacement-option {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  padding: 12px;
+  background: #243225;
+  color: #fff9eb;
+  border: 1px solid #43523f;
+  border-radius: 8px;
+}
+.replacement-option strong {
+  overflow-wrap: anywhere;
+}
+.replacement-option small {
+  color: #b7c8b1;
+}
+.team-editor {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px 0;
+  border-top: 1px solid #43523f;
+}
+.team-editor .field {
+  margin: 0;
+}
+.team-editor .field:first-child {
+  flex: 1;
+  min-width: 170px;
+}
+.studio-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.studio-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.studio-preview {
+  min-width: 0;
+}
+.studio-preview > .eyebrow {
+  display: block;
+  margin-bottom: 14px;
+}
+.studio-preview .tv-studio {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #53624e;
+}
+.tv-studio {
+  --tv-bg: #161f18;
+  --tv-surface: #253227;
+  --tv-text: #f8f4df;
+  --tv-accent: #f8d477;
+  color: var(--tv-text);
+  background: var(--tv-bg);
+  border-radius: 16px;
+  overflow-wrap: anywhere;
+}
+.tv-studio.theme-midnight {
+  --tv-bg: #0b1830;
+  --tv-surface: #162d48;
+  --tv-text: #eef6ff;
+  --tv-accent: #8edcef;
+}
+.tv-studio.theme-plum {
+  --tv-bg: #271831;
+  --tv-surface: #40244c;
+  --tv-text: #fff0fa;
+  --tv-accent: #efbddc;
+}
+.tv-studio.theme-sunrise {
+  --tv-bg: #312014;
+  --tv-surface: #4b3020;
+  --tv-text: #fff4dc;
+  --tv-accent: #ffd48c;
+}
+.tv-studio.background-spotlight {
+  background-image: radial-gradient(
+    ellipse at top,
+    color-mix(in srgb, var(--tv-accent) 13%, transparent),
+    transparent 65%
+  );
+}
+.tv-studio.background-grid {
+  background-image:
+    linear-gradient(#ffffff08 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+.tv-event-title {
+  text-align: center;
+  padding: 24px 20px 6px;
+  color: var(--tv-accent);
+  font-weight: 800;
+  font-size: clamp(22px, 2.4vw, 42px);
+}
+.tv-announcement {
+  text-align: center;
+  margin: 16px 24px;
+  padding: 18px 24px;
+  border: 1px solid var(--tv-accent);
+  border-radius: 12px;
+  font-size: clamp(18px, 2vw, 30px);
+}
+.tv-winner-message {
+  text-align: center;
+  padding: 0 24px 28px;
+  margin: 0;
+  font-size: clamp(20px, 2vw, 32px);
+}
+.tv-studio .game-page {
+  color: var(--tv-text);
+}
+.tv-studio .word-stage,
+.tv-studio .score-card,
+.tv-studio .standings > div {
+  background: var(--tv-surface);
+  color: var(--tv-text);
+}
+.tv-studio .eyebrow,
+.tv-studio h1 em {
+  color: var(--tv-accent);
+}
+.tv-studio .muted {
+  color: var(--tv-text);
+  opacity: 0.8;
+}
+.tv-studio.type-large .team-name,
+.tv-studio.type-large .stage-message {
+  font-size: clamp(22px, 2vw, 34px);
+}
+.tv-studio.type-extra-large .team-name,
+.tv-studio.type-extra-large .stage-message {
+  font-size: clamp(25px, 2.6vw, 42px);
+}
+.tv-studio.type-large .letter-tile {
+  font-size: clamp(40px, 5.4vw, 104px);
+  height: auto;
+  min-height: 95px;
+}
+.tv-studio.type-extra-large .letter-tile {
+  font-size: clamp(44px, 6.2vw, 120px);
+  height: auto;
+  min-height: 105px;
+}
+.preview-game {
+  padding: 32px 18px;
+  text-align: center;
+}
+.preview-sample {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: var(--tv-accent);
+  margin: 24px 0;
+}
+.type-large .preview-sample {
+  font-size: 48px;
+}
+.type-extra-large .preview-sample {
+  font-size: 54px;
+}
+.preview-teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.preview-teams span {
+  flex: 1;
+  min-width: 100px;
+  border-left: 3px solid;
+  background: var(--tv-surface);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+}
+.preview-teams b {
+  display: block;
+  font-size: 24px;
+  margin-top: 8px;
+}
+.studio-preview .tv-event-title {
+  font-size: 22px;
+}
+.studio-preview .tv-announcement,
+.studio-preview .tv-winner-message {
+  font-size: 16px;
+}
+@media (max-width: 760px) {
+  .tool-workspace {
+    padding: 18px;
+  }
+  .studio-layout {
+    grid-template-columns: 1fr;
+  }
+  .question-plan li {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .plan-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .replacement-list {
+    grid-template-columns: 1fr;
+  }
+  .host-tool-bar .button {
+    flex: 1;
+  }
+  .studio-pair {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .tv-announcement {
+    margin: 12px;
+    padding: 12px;
+  }
+}
+.desk-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #43523f;
+}
+.tv-studio .presentation .word-stage {
+  min-height: 45vh;
+}
+.tv-studio.type-large .game-topline {
+  font-size: 18px;
+}
+.tv-studio.type-extra-large .game-topline {
+  font-size: 22px;
+}
+.tv-studio.type-large .standings b {
+  font-size: 26px;
+}
+.tv-studio.type-extra-large .standings b {
+  font-size: 32px;
+}
+.tv-studio .timer small {
+  white-space: nowrap;
+}

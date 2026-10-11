@@ -1,5 +1,9 @@
 # Progress
 
+## Host Control Center and TV Presentation Studio — 2026-10-11
+
+Implemented private host planning, word/round ordering, reserve-word replacement, live host controls, team branding, and synchronized TV design drafts/publishing. Server authorization and host-only snapshots are covered by real-socket tests. All 374 unit/socket tests pass. All 18 existing browser scenarios and four new host-tool scenarios passed locally; studio axe checks and 1920px scoreboard visibility passed. Fixed the new test's select-label lookup to use accessible combobox roles. Azure rollout remains in progress. No game recovery feature is included. See HOST_TOOLS.md.
+
 ## Casting implementation — 2026-10-11
 
 Added Google Cast controls to hosted games, a display-only TV route, acknowledgement/retry handling and iPhone/iPad AirPlay guidance. Reuses the existing receiver and Azure resources. Application `7bafc33aa43dc087b58e2d59fe95575183e38d9c` is live. Receiver `83626ca0a5bc69a5c761b297963aca76111a8366` deployed successfully (Azure run 38154638074); frontend `5931f2e2a27f40359da2d05b19dc6f231fe6de36` deployed successfully (run 38154777337).

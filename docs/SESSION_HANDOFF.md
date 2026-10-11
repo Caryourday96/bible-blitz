@@ -1,5 +1,7 @@
 # Session handoff
 
+Host tools update in progress: implementation, 374 unit/socket checks and all 22 browser scenarios complete; TV layout and studio accessibility pass. Deployment pending. Read HOST_TOOLS.md. The release pins below describe the preceding casting release until the new release is verified.
+
 - Branch: main. Casting release deployed on 2026-10-11.
 - Live URL: https://adeticket.com/bibleblitz. No account required. The Adeticket portfolio preserves all six entries.
 - Pinned application revision: `7bafc33aa43dc087b58e2d59fe95575183e38d9c`. Subsequent documentation/verification commits do not change the deployed bundle. Read origin/main for the latest handoff revision.

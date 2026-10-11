@@ -1,5 +1,13 @@
 # Implementation backlog
 
+## Host tools release — 2026-10-11
+
+- Completed implementation: Host Control Center and TV Presentation Studio; see HOST_TOOLS.md for supported operations and constraints.
+- Verified: 374 unit/socket tests, including private plan delivery, role authorization, replacement/order rules and unchanged team scores.
+- Verified: desktop/mobile browser checks (18 existing + four new), TV scoreboard visibility with extra-large text and an announcement, and studio accessibility.
+- In progress: deployment and live verification.
+- Game recovery is excluded from this requested update.
+
 ## Casting follow-up — 2026-10-11
 
 - Implemented: Google Cast host controls; display-only TV route; matching ready/error acknowledgements; retry/change/stop; AirPlay instructions. 368 unit/socket tests and eight new browser scenarios pass.

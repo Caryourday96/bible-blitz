@@ -65,6 +65,7 @@ export interface ScoreEvent {
   previousStreak: number;
 }
 export interface Game {
+  presentation: Presentation;
   id: string;
   revision: number;
   settings: Settings;
@@ -89,6 +90,11 @@ export interface Game {
   notice: string;
 }
 export type Action =
+  | { type: 'MOVE_QUESTION'; from: number; to: number }
+  | { type: 'MOVE_ROUND'; from: number; to: number }
+  | { type: 'REPLACE_QUESTION'; index: number; questionId: string }
+  | { type: 'EDIT_TEAM'; teamId: string; name: string; color: string }
+  | { type: 'PRESENTATION'; presentation: Presentation }
   | {
       type:
         | 'START'
@@ -147,3 +153,26 @@ export const teamColors = [
   '#ed9fc6',
   '#dbbaa0',
 ];
+
+export interface Presentation {
+  title: string;
+  theme: 'forest' | 'midnight' | 'plum' | 'sunrise';
+  background: 'solid' | 'spotlight' | 'grid';
+  textSize: 'standard' | 'large' | 'extra-large';
+  announcement: string;
+  winnerMessage: string;
+  confetti: boolean;
+}
+export const defaultPresentation: Presentation = {
+  title: '',
+  theme: 'forest',
+  background: 'spotlight',
+  textSize: 'standard',
+  announcement: '',
+  winnerMessage: 'Thanks for playing. See you next round!',
+  confetti: true,
+};
+export interface HostPlan {
+  queue: Pick<Question, 'id' | 'answer' | 'difficulty' | 'categories'>[];
+  reserves: Pick<Question, 'id' | 'answer' | 'difficulty' | 'categories'>[];
+}

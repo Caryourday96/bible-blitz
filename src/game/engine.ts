@@ -1,5 +1,6 @@
 import { matches, scramble, shuffle } from './scramble';
-import { setupSchema } from './validation';
+import { actionSchema, setupSchema } from './validation';
+import { defaultPresentation, type HostPlan } from './types';
 import type { Action, Game, GameView, Question, Settings, Team } from './types';
 
 export function availableQuestions(bank: Question[], settings: Settings) {
@@ -22,6 +23,7 @@ export function createGame(
       `Only ${pool.length} questions match. Choose fewer questions or more categories.`,
     );
   return {
+    presentation: { ...defaultPresentation },
     id: crypto.randomUUID(),
     revision: 0,
     settings: parsed.settings,
@@ -120,12 +122,91 @@ function score(g: Game, teamId: string, kind: 'correct' | 'wrong') {
 
 /** Invalid actions return the original state. The caller supplies the authoritative clock. */
 export function transition(state: Game, action: Action, now: number): Game {
+  if (
+    ['MOVE_QUESTION', 'MOVE_ROUND', 'REPLACE_QUESTION', 'EDIT_TEAM', 'PRESENTATION'].includes(
+      action.type,
+    )
+  ) {
+    const parsed = actionSchema.safeParse(action);
+    if (!parsed.success) return state;
+    action = parsed.data;
+  }
   // Settle a deadline before processing any action, including a late answer or buzz.
   if (action.type !== 'TICK' && state.deadline !== null && now >= state.deadline)
     state = transition(state, { type: 'TICK' }, now);
   const g = structuredClone(state);
   const active = g.phase === 'QUESTION_ACTIVE';
   switch (action.type) {
+    case 'PRESENTATION':
+      g.presentation = action.presentation;
+      break;
+    case 'EDIT_TEAM': {
+      const team = g.teams.find((t) => t.id === action.teamId);
+      if (
+        !team ||
+        g.teams.some((t) => t.id !== team.id && t.name.toLowerCase() === action.name.toLowerCase())
+      )
+        return state;
+      team.name = action.name;
+      team.color = action.color;
+      break;
+    }
+    case 'MOVE_QUESTION': {
+      const first = g.phase === 'LOBBY' ? 0 : g.index + 1;
+      const total = g.settings.rounds * g.settings.questionsPerRound;
+      if (
+        g.isTiebreak ||
+        ['GAME_RESULTS', 'CANCELLED'].includes(g.phase) ||
+        action.from < first ||
+        action.to < first ||
+        action.from >= total ||
+        action.to >= total
+      )
+        return state;
+      const [question] = g.deck.splice(action.from, 1);
+      g.deck.splice(action.to, 0, question);
+      break;
+    }
+    case 'MOVE_ROUND': {
+      const size = g.settings.questionsPerRound;
+      const first = g.phase === 'LOBBY' ? 0 : Math.ceil((g.index + 1) / size);
+      if (
+        g.isTiebreak ||
+        ['GAME_RESULTS', 'CANCELLED'].includes(g.phase) ||
+        action.from < first ||
+        action.to < first ||
+        action.from >= g.settings.rounds ||
+        action.to >= g.settings.rounds
+      )
+        return state;
+      const round = g.deck.splice(action.from * size, size);
+      g.deck.splice(action.to * size, 0, ...round);
+      break;
+    }
+    case 'REPLACE_QUESTION': {
+      const total = g.settings.rounds * g.settings.questionsPerRound;
+      const first = g.phase === 'LOBBY' ? 0 : g.index + 1;
+      const currentPaused =
+        action.index === g.index &&
+        g.phase === 'PAUSED' &&
+        !g.ledger.some((e) => e.question === g.index);
+      const spare = g.deck.findIndex((q, i) => i >= total && q.id === action.questionId);
+      if (
+        spare < 0 ||
+        g.isTiebreak ||
+        ['GAME_RESULTS', 'CANCELLED'].includes(g.phase) ||
+        action.index >= total ||
+        (action.index < first && !currentPaused)
+      )
+        return state;
+      [g.deck[action.index], g.deck[spare]] = [g.deck[spare], g.deck[action.index]];
+      if (currentPaused) {
+        g.buzzTeam = null;
+        g.hinted = false;
+        g.notice = 'The host replaced this word.';
+      }
+      break;
+    }
     case 'TICK':
       if (g.deadline === null || now < g.deadline) return state;
       if (g.phase === 'COUNTDOWN') {
@@ -296,4 +377,16 @@ export function gameView(g: Game): GameView {
         : null,
     winners: leaders(g),
   };
+}
+
+/** Send only to an authenticated host, never a display or player. */
+export function hostPlan(g: Game): HostPlan {
+  const total = g.settings.rounds * g.settings.questionsPerRound;
+  const compact = (q: Question) => ({
+    id: q.id,
+    answer: q.answer,
+    difficulty: q.difficulty,
+    categories: q.categories,
+  });
+  return { queue: g.deck.slice(0, total).map(compact), reserves: g.deck.slice(total).map(compact) };
 }

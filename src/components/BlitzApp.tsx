@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import QRCode from 'qrcode';
 import Image from 'next/image';
-import { createGame, gameView, transition } from '@/game/engine';
+import { createGame, gameView, hostPlan, transition } from '@/game/engine';
 import { questions } from '@/game/questions';
 import type { Action, Game, Mode, Settings, Team } from '@/game/types';
 import { Setup } from './Setup';
@@ -31,6 +31,7 @@ import { startMusic, tone, unlockAudio } from './audio';
 import { useRoom } from './useRoom';
 import { appPath } from './paths';
 import { CastControls } from './CastControls';
+import { HostTools } from './HostTools';
 
 const modes = [
   {
@@ -254,7 +255,10 @@ export function BlitzApp() {
       return;
     }
     if (game) {
-      setGame(createGame(game.settings, game.teams, questions));
+      setGame({
+        ...createGame(game.settings, game.teams, questions),
+        presentation: game.presentation,
+      });
       setScreen('game');
     }
   };
@@ -433,6 +437,23 @@ export function BlitzApp() {
         {presentation && <span className="eyebrow">THE BIG SCREEN</span>}
       </header>
       <div id="main-content" tabIndex={-1}>
+        {screen === 'game' &&
+          view &&
+          !presentation &&
+          view.settings.mode !== 'solo' &&
+          (room.credential?.role === 'host'
+            ? room.snapshot?.hostPlan
+            : game
+              ? hostPlan(game)
+              : null) && (
+            <HostTools
+              key={view.id}
+              view={view}
+              plan={room.snapshot?.hostPlan ?? hostPlan(game!)}
+              connected={!room.snapshot || room.connected}
+              onAction={onAction}
+            />
+          )}
         {room.credential?.role === 'host' && code && (
           <CastControls key={code} code={code} displayUrl={`${joinLink}&display=1`} />
         )}

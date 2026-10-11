@@ -59,7 +59,47 @@ export const setupSchema = z
     )
       ctx.addIssue({ code: 'custom', message: 'Give every team a unique name and ID.' });
   });
+const displayText = (max: number) =>
+  z
+    .string()
+    .trim()
+    .max(max)
+    .refine(
+      (v) =>
+        ![...v].some(
+          (c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127 || c === '<' || c === '>',
+        ),
+      'Use plain text without control characters.',
+    );
+export const presentationSchema = z.object({
+  title: displayText(80),
+  theme: z.enum(['forest', 'midnight', 'plum', 'sunrise']),
+  background: z.enum(['solid', 'spotlight', 'grid']),
+  textSize: z.enum(['standard', 'large', 'extra-large']),
+  announcement: displayText(160),
+  winnerMessage: displayText(120),
+  confetti: z.boolean(),
+});
+const position = z.number().int().min(0).max(199);
 export const actionSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('MOVE_QUESTION'), from: position, to: position }),
+  z.object({
+    type: z.literal('MOVE_ROUND'),
+    from: z.number().int().min(0).max(9),
+    to: z.number().int().min(0).max(9),
+  }),
+  z.object({
+    type: z.literal('REPLACE_QUESTION'),
+    index: position,
+    questionId: z.string().max(80),
+  }),
+  z.object({
+    type: z.literal('EDIT_TEAM'),
+    teamId: z.string().max(40),
+    name: nameSchema,
+    color: teamSchema.shape.color,
+  }),
+  z.object({ type: z.literal('PRESENTATION'), presentation: presentationSchema }),
   z.object({
     type: z.enum([
       'START',

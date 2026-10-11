@@ -15,6 +15,10 @@ Play now: https://adeticket.com/bibleblitz — deployed and verified on Azure.
 
 No account is required. The bank has 336 entries across ten categories and four difficulty levels. Games support configurable timers and rounds, pause/resume, penalties, steals, undo, tiebreakers and replay. Audio is optional; presentation screens contain no host controls.
 
+## Host and presentation tools
+
+After creating a Party, Host + big screen or Online game, open **Host Control Center** to preview planned answers, reorder upcoming words/rounds, replace words and edit team names/colors. Use **TV Presentation Studio** to preview and publish themes, backgrounds, text size, announcements and winner-screen settings. Planning stays on the host; only published presentation settings reach the TV. [Tool guide](docs/HOST_TOOLS.md).
+
 ## Cast to a TV
 
 Choose **Host + big screen**, create a game, then select **Cast to TV**. Use Chrome on a computer or Android with a Chromecast or Google Cast TV on the same Wi-Fi. The TV shows only the board; your device retains the host controls. The connection status waits for the TV to join the room. Reconnect, change TV and stop casting controls are included. Keep the host tab open; game sounds play on the host device.

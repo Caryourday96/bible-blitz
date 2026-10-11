@@ -1,10 +1,10 @@
 import { randomBytes, randomInt } from 'node:crypto';
 import type { Server, Socket } from 'socket.io';
 import { z } from 'zod';
-import { createGame, gameView, transition } from '../game/engine';
+import { createGame, gameView, hostPlan, transition } from '../game/engine';
 import { questions } from '../game/questions';
 import { actionSchema, nameSchema, setupSchema } from '../game/validation';
-import type { Game, GameView } from '../game/types';
+import type { Game, GameView, HostPlan } from '../game/types';
 
 type Role = 'host' | 'player' | 'display';
 interface Session {
@@ -30,6 +30,7 @@ export interface Member {
   connected: boolean;
 }
 export interface RoomSnapshot {
+  hostPlan?: HostPlan;
   code: string;
   game: GameView;
   members: Member[];
@@ -91,8 +92,9 @@ export class RoomService {
     }
     if (++bucket.count > limit) throw new Error('A little too fast. Wait a minute and try again.');
   }
-  private snapshot(room: Room): RoomSnapshot {
+  private snapshot(room: Room, role?: Role): RoomSnapshot {
     return {
+      ...(role === 'host' ? { hostPlan: hostPlan(room.game) } : {}),
       code: room.code,
       game: gameView(room.game),
       members: [...room.sessions.values()]
@@ -106,7 +108,11 @@ export class RoomService {
     };
   }
   private broadcast(room: Room) {
-    this.io.to(room.code).emit('state', this.snapshot(room));
+    for (const session of room.sessions.values()) {
+      if (!session.sockets.size) continue;
+      const snapshot = this.snapshot(room, session.role);
+      for (const id of session.sockets) this.io.to(id).emit('state', snapshot);
+    }
   }
   private room(code: string) {
     const room = this.rooms.get(code);
@@ -198,7 +204,7 @@ export class RoomService {
       return {
         ok: true,
         credential: this.credential(room, session),
-        snapshot: this.snapshot(room),
+        snapshot: this.snapshot(room, session.role),
       };
     });
     on('join', (data) => {
@@ -222,7 +228,7 @@ export class RoomService {
       return {
         ok: true,
         credential: this.credential(room, session),
-        snapshot: this.snapshot(room),
+        snapshot: this.snapshot(room, session.role),
       };
     });
     on('resume', (data) => {
@@ -234,7 +240,7 @@ export class RoomService {
       return {
         ok: true,
         credential: this.credential(room, session),
-        snapshot: this.snapshot(room),
+        snapshot: this.snapshot(room, session.role),
       };
     });
     on('switchTeam', (data) => {
@@ -252,7 +258,7 @@ export class RoomService {
       return {
         ok: true,
         credential: this.credential(room, session),
-        snapshot: this.snapshot(room),
+        snapshot: this.snapshot(room, session.role),
       };
     });
     on('command', (data) => {
@@ -269,7 +275,8 @@ export class RoomService {
         throw new Error('Only the host can do that.');
       room.game = transition(room.game, { type: 'TICK' }, this.now());
       if (input.gameId !== room.game.id) throw new Error('A new game has started. Try again.');
-      if (room.commands.has(input.id)) return { ok: true, snapshot: this.snapshot(room) };
+      if (room.commands.has(input.id))
+        return { ok: true, snapshot: this.snapshot(room, session.role) };
       // Buzz ordering follows server receipt order. First accepted command advances revision.
       if (input.revision !== room.game.revision) {
         this.broadcast(room);
@@ -282,21 +289,24 @@ export class RoomService {
       if (room.commands.size > 2000) room.commands.delete(room.commands.values().next().value!);
       room.touched = this.now();
       this.broadcast(room);
-      return { ok: true, snapshot: this.snapshot(room) };
+      return { ok: true, snapshot: this.snapshot(room, session.role) };
     });
     on('replay', () => {
       const { room, session } = this.membership(socket);
       if (session.role !== 'host' || !['GAME_RESULTS', 'CANCELLED'].includes(room.game.phase))
         throw new Error('Only the host can restart a finished game.');
-      room.game = createGame(room.game.settings, room.game.teams, questions);
+      room.game = {
+        ...createGame(room.game.settings, room.game.teams, questions),
+        presentation: room.game.presentation,
+      };
       room.commands.clear();
       room.touched = this.now();
       this.broadcast(room);
-      return { ok: true, snapshot: this.snapshot(room) };
+      return { ok: true, snapshot: this.snapshot(room, session.role) };
     });
     on('sync', () => {
-      const { room } = this.membership(socket);
-      return { ok: true, snapshot: this.snapshot(room) };
+      const { room, session } = this.membership(socket);
+      return { ok: true, snapshot: this.snapshot(room, session.role) };
     });
     socket.on('leave', () => this.detach(socket));
     socket.on('disconnect', () => {

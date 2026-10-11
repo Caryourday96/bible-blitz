@@ -15,6 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import type { Action, GameView, Team } from '@/game/types';
+import { DisplayFrame } from './PresentationFrame';
 
 export function Scoreboard({ teams, awardedTo }: { teams: Team[]; awardedTo: string | null }) {
   return (
@@ -54,7 +55,16 @@ function Confetti() {
   );
 }
 
-export function GameScreen({
+export function GameScreen(props: Parameters<typeof GameBoard>[0]) {
+  return props.presentation ? (
+    <DisplayFrame view={props.view}>
+      <GameBoard {...props} />
+    </DisplayFrame>
+  ) : (
+    <GameBoard {...props} />
+  );
+}
+function GameBoard({
   view,
   onAction,
   onReplay,
@@ -141,7 +151,8 @@ export function GameScreen({
   if (isResults)
     return (
       <main className={`game-page results ${presentation ? 'presentation' : ''}`}>
-        {view.phase === 'GAME_RESULTS' && <Confetti />}
+        {view.phase === 'GAME_RESULTS' &&
+          (!presentation || view.presentation?.confetti !== false) && <Confetti />}
         <span className="eyebrow">
           {view.phase === 'ROUND_RESULTS'
             ? `ROUND ${view.round} / ${view.settings.rounds}`

@@ -9,7 +9,7 @@ import {
   type Credential,
   type RoomSnapshot,
 } from '../src/server/rooms';
-import { defaultSettings, type Action } from '../src/game/types';
+import { defaultSettings, defaultPresentation, type Action } from '../src/game/types';
 let http: HttpServer, io: Server, service: RoomService, url: string, time: number;
 const clients: Socket[] = [];
 const teams = [
@@ -84,6 +84,41 @@ afterEach(async () => {
   http.close();
 });
 describe('authoritative rooms over real sockets', () => {
+  it('keeps planning private on acknowledgements and broadcasts, authorizes tools and retains TV settings on replay', async () => {
+    const host = await connect(),
+      player = await connect(),
+      display = await connect();
+    const created = await create(host);
+    expect(created.snapshot.hostPlan?.queue).toHaveLength(2);
+    const code = created.snapshot.code;
+    const joined = success(await send(player, 'join', { code, name: 'Ada' }));
+    const watched = success(await send(display, 'join', { code, name: 'TV', display: true }));
+    expect(joined.snapshot).not.toHaveProperty('hostPlan');
+    expect(watched.snapshot).not.toHaveProperty('hostPlan');
+    const action: Action = {
+      type: 'PRESENTATION',
+      presentation: { ...defaultPresentation, title: 'Youth night', theme: 'plum' },
+    };
+    expect((await command(player, joined.snapshot, action)).ok).toBe(false);
+    expect((await command(display, watched.snapshot, action)).ok).toBe(false);
+    const received = [player, display].map(
+      (socket) => new Promise<RoomSnapshot>((resolve) => socket.once('state', resolve)),
+    );
+    const saved = success(await command(host, created.snapshot, action));
+    expect(saved.snapshot.hostPlan).toBeDefined();
+    for (const snapshot of await Promise.all(received)) {
+      expect(snapshot).not.toHaveProperty('hostPlan');
+      expect(snapshot.game.presentation.title).toBe('Youth night');
+      expect(snapshot.game.question).toBeNull();
+    }
+    const synced = success(await send(host, 'sync', {}));
+    expect(synced.snapshot.hostPlan).toBeDefined();
+    await command(host, synced.snapshot, { type: 'END_GAME' });
+    const replay = success(await send(host, 'replay', {}));
+    expect(replay.snapshot.game.presentation).toEqual(action.presentation);
+    expect(replay.snapshot.hostPlan).toBeDefined();
+    expect(success(await send(display, 'sync', {})).snapshot).not.toHaveProperty('hostPlan');
+  });
   it('creates rooms, joins players and spectators, switches teams and hides the deck', async () => {
     const host = await connect(),
       player = await connect(),
